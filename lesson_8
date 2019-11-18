@@ -19,15 +19,17 @@
 
 
 
-### Что делать дома
+### Что делать дома (ДЗ)
 
 
 ### Обновление данных
 
-Необходимо:
+<font size="30px">Необходимо:</font>
 
+* Создать отдельный "общий" чат
 * Передавать новые сообщения на бэк
 * Получать новые сообщения с бэкенда в режиме реального времени (RTU)
+* Можно использовать любую из технологий для RTU (polling, sse, ws)
 
 
 ### Как это сделать в коде
@@ -47,7 +49,7 @@ class SomeComponent extends React.Component {
   }
 
   getMessages = () => {
-    fetch(`${API_URL}``)
+    fetch(`${API_URL}`)
       .then(res => res.json())
       .then(data => {
         console.log(data);
@@ -68,16 +70,44 @@ import { useEffect, useState } from React;
 const SomeFunctionalComponent = () => {
   const [messages, setMessages] = useState([])
   useEffect(() => {
-    fetch(`${API_URL}``)
+    fetch(`${API_URL}`)
       .then(res => res.json())
       .then(data => {
         console.log(data);
         setMessages(data.messages)
       });
   }, []);
-
 }
 ```
+
+
+#### Обновление в "реальном времени"
+
+```js
+const pollItems = () => {
+  fetch(`${API_URL}?key=value&another_key=another_value`)
+    .then(resp => resp.json())
+    .then(data => console.log(data));
+}
+
+const t = setInterval(() => pollItems(), 3000);
+
+// clearInterval(t)
+```
+
+
+#### Сервер с данными (nodejs)
+
+Репозиторий: https://github.com/track-mail-ru/tt-front-server
+
+Роутинг: https://github.com/track-mail-ru/tt-front-server/blob/master/server.js
+
+
+#### При выполнении дз
+
+1. обращаться к локальному бэкенду до тех пор, пока не будет задеплоен бэкенд.
+1. Сообщения необходимо отправлять с разных клиентов/вкладок.
+1.При сдаче дз приложить гиф/видео с обновлением сообщений в общем чате.
 
 
 
@@ -187,7 +217,8 @@ HTTP 2 RFC 7540: https://tools.ietf.org/html/rfc7540
 
 При работе с мобильными устройствами необходимо беречь заряд устройства
 
-Пример:
+
+#### Пример
 
 * не использовать polling
 * агрегировать запросы на клиенте
@@ -694,11 +725,33 @@ Server Sent Events / EventSource
 И клиент, и сервер могут отправлять данные друг другу
 
 
-What are Long-Polling, Websockets, Server-Sent Events (SSE) and Comet?: https://stackoverflow.com/a/12855533/3984110
+What are Long-Polling, Websockets, Server-Sent Events (SSE) and Comet?
+
+https://stackoverflow.com/a/12855533/3984110
+
 
 
 ### Инструменты разработчика
 
+
+Ресурс для испытаний:
+
+https://googlechrome.github.io/devtools-samples/debug-js/get-started
+
+
+![Buggy site](images/buggy_site.png)
+
+
+![Buggy site debug](images/buggy_site_debug.png)
+
+
+![Buggy site debug next step](images/buggy_site_debug_2.png)
+
+
+![Buggy site debug next step](images/buggy_site_debug_3.png)
+
+
+<font size="30px">cmd+s / ctrl+s для сохранений изменений</font>
 
 
 
@@ -846,11 +899,7 @@ const getCommentsByAuthorId(data, authorId) => (
 Пользователь, оставивший больше всех комментариев
 
 ```js
-let res = {}
-
-for (const block of data) {
-
-}
+let commentsPerUser = {};
 
 data.forEach(article => {
  article.comments.forEach(comment => {
@@ -874,12 +923,38 @@ Object.keys(commentsPerUser).forEach(userId => {
 ```
 
 
+<font size="30px">Клиент отображает данные</font>
 
-### Обработка данных в React
+<font size="30px">Клиент не обрабатывает данные</font>
 
 
-Нормализация данных
+### Нормализация данных (react)
 
 Normalizr: https://github.com/paularmstrong/normalizr
 
-### Normalizr
+
+```js
+import { normalize, schema } from 'normalizr';
+
+const user = new schema.Entity('users', {}, {
+  idAttribute: '_id'
+});
+
+const comment = new schema.Entity('comments', {
+  commenter: user
+});
+
+const article = new schema.Entity('articles', {
+  author: user,
+  comments: [comment]
+});
+
+const normalizedData = normalize(myArticles, [article]);
+```
+
+
+Эксперименты: https://stackblitz.com/edit/normalizr-playground-jzc2zj?file=index.ts
+
+
+
+### Спасибо за внимание
