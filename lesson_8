@@ -1,0 +1,885 @@
+### Взаимодействие с сервером
+
+Алексей Опалев
+
+
+
+![Important](images/important.jpg)
+
+
+
+### План лекции
+
+1. TLDR [что нужно сделать дома]
+1. Компьютерные сети 101
+1. Взаимодействие клиента с бэкендом
+1. RTU
+1. React
+1. Домашнее задание
+
+
+
+### Что делать дома
+
+
+### Обновление данных
+
+Необходимо:
+
+* Передавать новые сообщения на бэк
+* Получать новые сообщения с бэкенда в режиме реального времени (RTU)
+
+
+### Как это сделать в коде
+
+
+#### Классовый компонент
+
+```js
+class SomeComponent extends React.Component {
+  state = {
+    // state declaration
+    messages = []
+  }
+
+  componentDidMount () => {
+    this.getMessages()
+  }
+
+  getMessages = () => {
+    fetch(`${API_URL}``)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        this.setState({
+          messages: data.messages
+        });
+      });
+  };
+}
+```
+
+
+#### Функциональный компонент
+
+```js
+import { useEffect, useState } from React;
+
+const SomeFunctionalComponent = () => {
+  const [messages, setMessages] = useState([])
+  useEffect(() => {
+    fetch(`${API_URL}``)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setMessages(data.messages)
+      });
+  }, []);
+
+}
+```
+
+
+
+### Архитектура веб приложения
+
+
+#### Глазами обычного фронтэндера
+
+![Web app architecture - dummy](images/dummy_web_app_architecture.png)
+
+
+#### Глазами опытного фронтэндера
+
+![Web app architecture - mature](images/mature_web_app_architecture.png)
+
+
+#### На самом деле
+
+![Web app architecture - real](images/real_web_app_architecture.png)
+
+
+Читать подробнее: [The System Design Primer](https://github.com/donnemartin/system-design-primer)
+
+
+
+### Сеть 101
+
+
+<font size="30px">Что такое модель сети</font>
+
+<font size="30px">TCP/IP, OSI</font>
+
+
+### Модель сети OSI
+
+![OSI](images/osi.png)
+
+<!--
+| <small>Уровень</small>  | <small>Физический</small> | <small>Канальный</small> | <small>Сетевой</small> | <small>Транспортный</small> | <small>Сеансовый</small> | <small>Представления</small> | <small>Прикладной</small> |
+| -------- | ---------- | --------- | ------- | ------------ | --------- | ------------- | ---------- |
+| <small>Описание</small> | <small>Передача бинарных данных (кабель, радиочастота)</small> | <small>Физическая адресация между двумя объектами</small> | <small>Адресация, определение маршрута, контроль траффика</small> | <small>Надежная передача данных между несколькими участниками</small> | <small>Поддержание сеанса связи</small> | <small>Сжатие, шифрование, представление данных</small> | <small>Высокоуровневые апи</small> |
+| <small>Протоколы</small> | <small>802.15</small> | <small>809.11 GSM</small> | <small>802.3 PPP ARP</small> | <small>IP RIP OSPF</small> | <small>TCP UDP</small> | <small>L2TP SOCKS RPC</small> | <small>MIME TLS</small> | <small>HTTP WebSocket</small> |
+-->
+
+
+### TCP
+
+Transmission Control Protocol
+
+RFC 793: https://tools.ietf.org/html/rfc793
+
+
+Протокол TCP – абстракция надежной передачи данных в сети (ненадежной среде)
+
+
+#### Глоссарий
+
+* Basic Data Transfer – передача потока данных между отправителем и получателем
+* Reliability – восстановление данных после повреждения, сохранение порядка пакетов
+* Flow Control – установка получателем ограничения на объем получаемых данных
+* Multiplexing – установка портов для обслуживания процессов (создание сокетов)
+* Connections – установленное соединение между двумя сокетами
+* Precedence and Security – возможность установить уровень безопасности и приоритет для соединения
+
+
+Установка TCP соединения
+![TCP](images/tcp.png)
+
+
+### TLS
+
+Transport Layer Security
+
+RFC 5256: https://tools.ietf.org/html/rfc5246
+
+
+Протокол TLS – механизм безопасной передачи данных в сети Интернет
+
+
+TLS handshake
+
+<img src="images/tls.png" width="75%" />
+
+
+### HTTP
+
+HTTP 1.1 RFC 2616: https://tools.ietf.org/html/rfc2616
+
+HTTP 2 RFC 7540: https://tools.ietf.org/html/rfc7540
+
+
+### Лучшие практики HTTP
+
+* Сократить количество запросов к DNS
+* Сократить количество TCP соединений
+* Сократить количество редиректов
+* Снизить RTT
+* Избавиться от ненужных ресурсов
+* Кэшировать ресурсы на клиенте
+* Сжимать данные при передаче
+* Не запрашивать ненужные ресурсы
+* Утилизировать обработку запросов и ответов
+* Использовать оптимизации соответсвующие протоколу (http1.1 / http2)
+
+
+### Помнить про мобильные сети
+
+При работе с мобильными устройствами необходимо беречь заряд устройства
+
+Пример:
+
+* не использовать polling
+* агрегировать запросы на клиенте
+* агрегировать ответы на сервере
+* снижение активности скриптов аналитики
+
+
+
+### Порядок загрузки страницы
+
+![Order](images/order.png)
+
+
+Читать больше: [Ilya Grigorik: Analyzing Critical Rendering Path Performance](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp?hl=ru)
+
+
+
+### Включение ресурсов
+
+
+#### JS
+
+```html
+<script async />  <!-- не блокирует DOM, выполнится как можно скорее -->
+<script defer />  <!-- выполнится после построения DOM -->
+```
+
+```html
+<script>
+  var script = document.createElement('script');
+  script.addEventListener('load', (event) => {});
+  script.src = '/dist/main.js';
+  document.head.appendChild(script);
+</script>
+```
+
+
+#### CSS
+
+```html
+<link href="/dist/touch.css" rel="stylesheet" media="(max-width: 320px)">
+<link href="landscape.css" as="style" rel="preload" media="(orientation: landscape)">
+
+@import "common.css" screen;
+@import url('landscape.css') screen and (orientation:landscape);
+```
+
+
+
+### приоритет и предзагрузка
+
+
+#### Низкий приоритет
+
+```html
+<link rel="prefetch">
+```
+
+Экраны, которые понадобятся позже
+
+
+#### Высокий приоритет
+
+```html
+<link rel="preload" as="script">
+```
+
+Текущий экран
+
+
+#### Resource Hints
+
+```html
+<link rel="dns-prefetch" href="https://dobro.mail.ru>"
+<link rel="preconnect" href="https://pets.mail.ru/external-static">
+<link rel="prefetch" href="https://pets.mail.ru/news" as "document">
+<link rel="prefetch" href="https://pets.mail.ru/news/?page=2" as "document">
+<link rel="prerender" href="https://pets.mail.ru/news/?page=2">
+```
+
+
+Читать больше: [Ivan Akulov: Preload, prefetch and other <link> tags](https://3perf.com/blog/link-rels/)
+
+<small>[Перевод статьи на хабре](https://habr.com/ru/post/445264/)</small>
+
+
+
+### События загрузки
+
+
+### DOMContentLoaded
+
+* Блокирующие ресурсы загружены
+* Построение DOM завершено
+
+```js
+document.addEventListener("DOMContentLoaded", (event) => { });
+```
+
+
+### load
+
+* Все внешние ресурсы загружены
+* Построение CSSOM завершено
+
+```js
+window.addEventListener("load", (event) => { });
+```
+
+
+### unload/beforeunload
+
+```js
+window.addEventListener("beforeunload", (event) => {
+  event.preventDefault();
+  event.returnValue = '';
+});
+```
+
+
+
+### URI
+<sub><sup><sub><sup>Uniform Resource Identifier</sup></sub></sup></sub>
+![URI schema](images/uri_schema.png)
+
+
+* window.location
+* window.URL
+
+
+```js
+Object.getOwnPropertyNames(window.location)
+```
+
+* protocol, hostname, pathname, search, hash
+* port, host, searchParams, password, username
+* href
+
+
+```js
+const myUrl = new URL('https://example.com/path/page.ext?query=1#second');
+window.location.assign(myUrl);  // переход на новую страницу
+```
+
+
+
+### Same-origin policy
+
+<small>https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy</small>
+
+
+### Origin
+
+protocol host port
+
+* `https` – protocol
+* `mail.ru` – host
+* `443` – port
+
+<small>https://en.wikipedia.org/wiki/Same-origin_policy#Origin_determination_rules</small>
+
+
+`https://news.mail.ru`
+
+| Origin                                        | Result   |
+|:--------------------------------------------- |:--------:|
+| `https://news.mail.ru/politics/`              | **OK**   |
+| <font color='red'>http</font>://news.mail.ru  | **Fail** |
+| https://<font color='red'>auto</font>.mail.ru | **Fail** |
+
+
+### Subdomain
+
+Повышение уровня домена
+
+```
+document.domain = 'example.com';
+```
+
+`https://news.mail.ru` -- `https://mail.ru`
+
+
+### Разные источники
+
+* Можно отправлять запросы и встраивать контент
+* Нельзя программно читать ответы
+* Нет доступа к DOM и свойству location
+
+
+### iframe
+
+Заголовок: `X-Frame-Options`
+
+```
+X-Frame-Options: deny
+X-Frame-Options: allow-from https://example.com/
+```
+
+
+
+### CORS
+
+<small>Cross-Origin Resource Sharing</small>
+
+Техника, управления доступом к ресурсам из внешних источников
+
+<small>https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS</small>
+
+
+* Access-Control-Allow-*
+* Access-Control-Request-*
+
+```
+Access-Control-Allow-Origin: https://example.com
+```
+
+
+### Credentials
+
+<small>Реквизиты доступа</small>
+
+Не будут отправлены по-умолчанию
+
+Будут отправлены только с разрешения источника
+
+
+### CORS: Простые запросы
+
+
+### Методы
+
+* GET
+
+* POST
+
+* HEAD
+
+
+### Заголовки
+
+* Accept
+* Accept-Language
+* Content-Language
+* Content-Type
+  * application/x-www-form-urlencoded
+  * multipart/form-data
+  * text/plain
+
+
+### Request
+
+```
+GET /public HTTP/1.1
+Host: my-example.com
+Origin: https://example.com
+```
+
+
+### Response
+
+```
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+```
+
+
+
+### CORS: Preflight
+
+<small>непростые запросы</small>
+
+* Отличается метод
+* Присутствуют другие заголовки
+* Другой Content-Type
+
+
+Request [options]
+
+```
+OPTIONS /public HTTP/1.1
+Host: my-example.com
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers:
+X-CSRF-Token, Content-Type
+```
+
+Response
+
+```
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: https://example.com
+Access-Control-Allow-Methods: POST, GET, OPTIONS
+Access-Control-Allow-Headers:
+X-CSRF-Token, Content-Type
+Access-Control-Max-Age: 600
+```
+
+
+Request [post]
+
+```
+POST /public HTTP/1.1
+Host: my-example.com
+X-CSRF-Token: some-value
+Origin: https://example.com
+```
+
+Response
+
+```
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: https://example.com
+```
+
+
+
+### CORS: Credentials
+
+
+### Реквизиты доступа
+
+* Cookie
+* Authorization
+* TLS-сертификат
+
+
+### Особенности
+
+* Ответ на простой запрос нельзя прочесть
+* Целевой запрос не будет отправлен, если в preflight нет разрешения
+
+
+Request
+
+```
+POST /public HTTP/1.1
+Host: my-example.com
+Cookie: key=some-value
+Origin: https://example.com
+```
+
+Response
+
+```
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: https://example.com
+Access-Control-Allow-Credentials: true
+```
+
+
+
+### Выполнение запросов
+
+|                          | <small>Встроенное поведение</small> | <small>Обработка результата</small> | <small>Отмена запроса</small> |
+| ------------------------ |:-------------------- |:-------------------- |:-------------- |
+| <small>Переход между страницами</small> | Да                   | Нет *                | Нет            |
+| <small>Отправка формы</small>           | Да                   | Нет *                | Нет            |
+| <small>Добавление ресурса</small>       | Да *                 | Да *                 | Нет            |
+| <small>XHR/Fetch</small>                | Нет                  | Да                   | Да *           |
+
+
+
+### XMLHttpRrequest
+
+![FC Ajax](images/Ajax_Amsterdam.png)
+
+
+XMLHttpRequest и AJAX – «исторические» названия
+
+
+<img src="images/ajax_call.png" width="75%" />
+
+<small>[OpenCart – Create Ajax Function](https://blog.arvixe.com/opencart-create-ajax-function/)</small>
+
+
+```js
+const myRequest = new XMLHttpRequest;
+myRequest.addEventListener('readystatechange', (event) => {
+    if (myRequest.readyState !== XMLHttpRequest.DONE) {
+      return;
+    }
+    if (myRequest.status === 200) {
+        console.log(JSON.parse(myRequest.responseText));
+    } else {
+        console.log(myRequest.responseText);
+    }
+});
+myRequest.open('GET', '/test.json', true);
+myRequest.send();
+```
+
+
+```js
+const myRequest = new XMLHttpRequest;
+XMLHttpRequest.prototype.readyState;
+// 0  UNSENT
+// 1  OPENED
+// 2  HEADERS_RECEIVED
+// 3  LOADING
+// 4  DONE
+
+XMLHttpRequest.prototype.onreadystatechange = () => {};
+
+XMLHttpRequest.prototype.response/responseText
+
+XMLHttpRequest.prototype.status/statusText
+
+```
+
+
+Читать больше про XHR:
+
+* [javascript.info: XMLHttpRequest](https://javascript.info/xmlhttprequest)
+* [MDN: XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
+* [MDN: Using XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest)
+
+
+### Fetch
+
+* Считается удобной заменой XHR
+* Возвращает Promise
+* Отдельные объекты запроса, ответа и заголовков
+* 404, 500, etc – вернут fulfilled Promise
+
+
+```js
+const myRequest = fetch('/test.json');
+myRequest.then(
+    response => response.ok && response.json()
+).then(console.log);
+```
+
+
+В качестве аргумента принимает строку или объект Request
+
+`fetch(input[, init]);`
+
+
+### Объект инициализации
+
+* method, body, headers
+* mode, credentials
+* cache, redirect
+
+
+```js
+const myInit = {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'default',
+    body: JSON.stringify({test: 'value')
+};
+const myRequest = new Request('/test.json');
+
+fetch(myRequest, myInit).then((response) => {});
+```
+
+
+
+### Real Time Updates
+
+
+#### Polling
+
+Запрос с клиента на сервер каждые N секунд
+
+Ответ с сервера возвращается сразу
+
+
+```js
+const pollItems = () => {
+  fetch('https://tt-front-server.track-mail-ru.now.sh/')
+    .then(resp => resp.json())
+    .then(data => console.log(data));
+}
+
+const t = setInterval(() => pollItems(), 1000);
+
+// clearInterval(t)
+```
+
+
+### Long Polling
+
+Запрос с клиента на сервер, где
+
+* сервер отвечает только когда будет, чем ответить
+* после получения ответа от сервера выполняется новый запрос
+
+
+#### SSE
+
+Server Sent Events / EventSource
+
+Клиент устанавлиеает соединение с сервером
+
+Сервер отправляет данные по установленному соединению
+
+
+### Web Sockets
+
+Клиент устанавливает соединение с сервером
+
+И клиент, и сервер могут отправлять данные друг другу
+
+
+What are Long-Polling, Websockets, Server-Sent Events (SSE) and Comet?: https://stackoverflow.com/a/12855533/3984110
+
+
+### Инструменты разработчика
+
+
+
+
+### Обработка данных
+
+
+Сгенерируем данные для экспериментов
+
+Мок данных: https://www.json-generator.com/
+
+
+На входе
+
+```js
+[
+  '{{repeat(2)}}',
+  {
+    id: '{{objectId()}}',
+    title: '{{lorem(3, "words")}}',
+    author: {
+      _id: '{{objectId()}}',
+      name: '{{firstName()}} {{surname()}}'
+    },
+    comments: [
+      '{{repeat(2)}}',
+      {
+        id: '{{objectId()}}',
+        content: '{{lorem(1, "sentences")}}',
+        commenter: {
+          _id:  '{{objectId()}}',
+          name: '{{firstName()}} {{surname()}}'
+        }
+      }
+    ]
+  }
+]
+```
+
+
+На выходе
+
+```js
+[
+  {
+    "author": {
+      "_id": "5dc7007eeec76ec231243922",
+      "name": "Jerry Buckley"
+    },
+    "id": "5dc7007e7fbd1abbdb88c7f8",
+    "comments": [
+      {
+        "content": "Laborum excepteur magna non tempor adipisicing.",
+        "commenter": {
+          "_id": "5dc7007e0567d5ffab316a68",
+          "name": "Tate Bass"
+        },
+        "id": "5dc7007e9ee629c52471c208"
+      },
+      {
+        "content": "Consectetur aliqua sint id dolor anim minim tempor aliqua cillum amet consequat est.",
+        "commenter": {
+          "_id": "5dc7007e4dfffbeff2faba79",
+          "name": "Carson Kirk"
+        },
+        "id": "5dc7007e5cd4c6aca5fb6f20"
+      }
+    ],
+    "title": "esse esse commodo"
+  },
+  {
+    "author": {
+      "_id": "5dc7007e94f5e59be8c4a5f4",
+      "name": "Reyna Lynch"
+    },
+    "id": "5dc7007e97b77625bff184b5",
+    "comments": [
+      {
+        "content": "Officia aliquip incididunt occaecat laborum qui reprehenderit sunt quis est labore do Lorem proident.",
+        "commenter": {
+          "_id": "5dc7007ebabe12e2b5652660",
+          "name": "Ida Osborne"
+        },
+        "id": "5dc7007ef72a507101c753a2"
+      },
+      {
+        "content": "Aliqua cillum laborum ad nulla officia sint ullamco officia.",
+        "commenter": {
+          "_id": "5dc7007e4ffbe7b871b3db4f",
+          "name": "Courtney Hammond"
+        },
+        "id": "5dc7007ea2e8cb8d67207dcd"
+      }
+    ],
+    "title": "in incididunt enim"
+  }
+]
+```
+
+Валидный json, который будем обрабатывать
+
+
+### filter, map, reduce
+
+```js
+[8, 9, 3, 15].filter(n => n % 2 === 0)
+// [8]
+['one', 'two'].map(l => `special__${l}`)
+// ['special__one', 'special__two']
+[1, 2, 3].reduce((res, num) => {return res + num}, 0)
+// 6
+['one', 'two'].reduce((acc, item) => {acc[item] = item; return acc}, {})
+// {one: "one", two: "two"}
+```
+
+
+### Обработка нашего массива данных
+
+
+Данные конкретного пользователя
+
+```js
+const getDataByAuthorId (data, authorId) => (
+  data.filter(block => block.author._id === authorId)
+)
+```
+
+
+Комментарии конкретного пользователя
+
+```js
+const getCommentsByAuthorId(data, authorId) => (
+  let comments = []
+  for (const block of data) {
+    for (const comment of block.comments) {
+      if (comment.commenter._id === authorId) {
+        comments.push(comment)
+      }
+    }
+  }
+
+)
+```
+
+
+Пользователь, оставивший больше всех комментариев
+
+```js
+let res = {}
+
+for (const block of data) {
+
+}
+
+data.forEach(article => {
+ article.comments.forEach(comment => {
+   if (commentsPerUser[comment.commenter._id]) {
+    commentsPerUser[comment.commenter._id]++;
+   } else {
+    commentsPerUser[comment.commenter._id] = 1;
+   }
+ })
+});
+
+let userWithMostComments = {};
+Object.keys(commentsPerUser).forEach(userId => {
+  if (commentsPerUser[userId] > (userWithMostComments.comments || -1)) {
+    userWithMostComments = {
+      user: userId,
+      comments: commentsPerUser[userId]
+    };
+  }
+})
+```
+
+
+
+### Обработка данных в React
+
+
+Нормализация данных
+
+Normalizr: https://github.com/paularmstrong/normalizr
+
+### Normalizr
