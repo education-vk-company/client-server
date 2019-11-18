@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Алексей Опалев">
+  <title>Взаимодействие с сервером</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://revealjs.com/css/reveal.css">
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://revealjs.com/css/theme/sky.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'https://revealjs.com/css/print/pdf.css' : 'https://revealjs.com/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="https://revealjs.com/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Взаимодействие с сервером</h1>
+  <p class="author">Алексей Опалев</p>
+</section>
+
+<section id="взаимодействие-с-сервером" class="slide level3">
+<h3>Взаимодействие с сервером</h3>
+<p>Алексей Опалев</p>
+</section>
+<section id="важно" class="slide level3">
+<h3>Важно</h3>
+<ul>
+<li>Отметка о посещении</li>
+<li>Обратная связь о лекции</li>
+</ul>
+</section>
+<section id="порядок-загрузки-страницы" class="slide level3">
+<h3>Порядок загрузки страницы</h3>
+<!-- -- data-background="#ff0000" -->
+<p>Читать больше: <a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp?hl=ru">Ilya Grigorik: Analyzing Critical Rendering Path Performance</a></p>
+</section>
+<section id="включение-ресурсов" class="slide level3">
+<h3>Включение ресурсов</h3>
+<h4 id="js">JS</h4>
+<div class="sourceCode" id="cb1"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">&lt;script</span><span class="ot"> async</span> <span class="kw">/&gt;</span>  <span class="co">&lt;!-- не блокирует DOM, выполнится как можно скорее --&gt;</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">&lt;script</span><span class="ot"> defer</span> <span class="kw">/&gt;</span>  <span class="co">&lt;!-- выполнится после построения DOM --&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">&lt;script&gt;</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="kw">var</span> script <span class="op">=</span> <span class="va">document</span>.<span class="at">createElement</span>(‘script’)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="va">script</span>.<span class="at">addEventListener</span>(<span class="st">&#39;load&#39;</span><span class="op">,</span> (event) <span class="op">=&gt;</span> <span class="op">{}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="va">script</span>.<span class="at">src</span> <span class="op">=</span> <span class="st">&#39;/dist/main.js&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="va">document</span>.<span class="va">head</span>.<span class="at">appendChild</span>(script)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="kw">&lt;/script&gt;</span></a></code></pre></div>
+<h4 id="css">CSS</h4>
+<div class="sourceCode" id="cb3"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">&lt;link</span><span class="ot"> href=</span><span class="st">&quot;/dist/touch.css&quot;</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> media=</span><span class="st">&quot;(max-width: 320px)&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">&lt;link</span><span class="ot"> href=</span><span class="st">&quot;landscape.css&quot;</span><span class="ot"> as=</span><span class="st">&quot;style&quot;</span><span class="ot"> rel=</span><span class="st">&quot;preload&quot;</span><span class="ot"> media=</span><span class="st">&quot;(orientation: landscape)&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">@import &quot;common.css&quot; screen;</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">@import url(&#39;landscape.css&#39;) screen and (orientation:landscape);</a></code></pre></div>
+</section>
+<section id="приоритет-и-предзагрузка" class="slide level3">
+<h3>приоритет и предзагрузка</h3>
+<h4 id="низкий-приоритет">Низкий приоритет</h4>
+<p>для следующих экранов</p>
+<p><code>&lt;link rel=&quot;prefetch&quot;&gt;</code></p>
+<h4 id="высокий-приоритет">Высокий приоритет</h4>
+<p>для текущего экрана (CR)</p>
+<p><code>&lt;link rel=&quot;preload&quot; as=&quot;script&quot;&gt;</code></p>
+<h4 id="resource-hints-wd">Resource Hints (WD)</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;dns-prefetch&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;preconnect&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;prerender&quot;</span><span class="kw">&gt;</span></a></code></pre></div>
+</section>
+<section id="события-загрузки" class="slide level3">
+<h3>События загрузки</h3>
+<h4 id="domcontentloaded">DOMContentLoaded</h4>
+<ul>
+<li>Блокирующие ресурсы загружены</li>
+<li>Построение DOM завершено</li>
+</ul>
+<p><code>document.addEventListener(&quot;DOMContentLoaded&quot;, (event) =&gt; { });</code></p>
+<h4 id="load">load</h4>
+<ul>
+<li>Все внешние ресурсы загружены</li>
+<li>Построение CSSOM завершено</li>
+</ul>
+<p><code>window.addEventListener(&quot;load&quot;, (event) =&gt; { });</code></p>
+<h4 id="unloadbeforeunload">unload/beforeunload</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="va">window</span>.<span class="at">addEventListener</span>(<span class="st">&quot;beforeunload&quot;</span><span class="op">,</span> (event) <span class="op">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"> <span class="va">event</span>.<span class="at">preventDefault</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"> <span class="va">event</span>.<span class="at">returnValue</span> <span class="op">=</span> <span class="st">&#39;&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+</section>
+<section id="uri" class="slide level3">
+<h3>URI</h3>
+</section>
+    </div>
+  </div>
+
+  <script src="https://revealjs.com/lib/js/head.min.js"></script>
+  <script src="https://revealjs.com/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'https://revealjs.com/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'https://revealjs.com/plugin/zoom-js/zoom.js', async: true },
+          { src: 'https://revealjs.com/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
