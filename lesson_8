@@ -194,7 +194,7 @@ TLS handshake
 
 ### HTTP
 
-HTTP 1.1 RFC 2616: https://tools.ietf.org/html/rfc2616
+HTTP 1.1 RFC 7231: https://tools.ietf.org/html/rfc7231
 
 HTTP 2 RFC 7540: https://tools.ietf.org/html/rfc7540
 
