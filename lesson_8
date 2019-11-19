@@ -2,6 +2,9 @@
 
 Алексей Опалев
 
+<img style="margin: 20px 50px 0 0" class="plain" src="images/track.svg" width=200ppx height=200px />
+<img style="margin: 20px 0 0 50px" class="plain" src="images/atom.svg" width=190ppx height=190px />
+
 
 
 ![Important](images/important.jpg)
@@ -107,7 +110,7 @@ const t = setInterval(() => pollItems(), 3000);
 
 1. обращаться к локальному бэкенду до тех пор, пока не будет задеплоен бэкенд.
 1. Сообщения необходимо отправлять с разных клиентов/вкладок.
-1.При сдаче дз приложить гиф/видео с обновлением сообщений в общем чате.
+1. При сдаче дз приложить гиф/видео с обновлением сообщений в общем чате.
 
 
 
