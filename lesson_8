@@ -255,6 +255,8 @@ HTTP 2 RFC 7540: https://tools.ietf.org/html/rfc7540
 </script>
 ```
 
+Script Tag - async & defer: https://stackoverflow.com/a/39711009/3984110
+
 
 #### CSS
 
@@ -300,9 +302,11 @@ HTTP 2 RFC 7540: https://tools.ietf.org/html/rfc7540
 ```
 
 
-Читать больше: [Ivan Akulov: Preload, prefetch and other <link> tags](https://3perf.com/blog/link-rels/)
+Читать больше:
 
-<small>[Перевод статьи на хабре](https://habr.com/ru/post/445264/)</small>
+* [Ilya Grigorik: Preconnect, prerender, prefetch [slides]](https://docs.google.com/presentation/d/18zlAdKAxnc51y_kj-6sWLmnjl6TLnaru_WH0LJTjP-o/present?slide=id.g11c7a3308_2_0)
+* [w3.org: resource hints](https://www.w3.org/TR/resource-hints/)
+* [Ivan Akulov: Preload, prefetch and other <link> tags](https://3perf.com/blog/link-rels/) <small>[Перевод статьи на хабре](https://habr.com/ru/post/445264/)</small>
 
 
 
@@ -315,8 +319,10 @@ HTTP 2 RFC 7540: https://tools.ietf.org/html/rfc7540
 * Построение DOM завершено
 
 ```js
-document.addEventListener("DOMContentLoaded", (event) => { });
+document.addEventListener("DOMContentLoaded", (event) => {console.log('DOMContentLoaded is done')});
 ```
+
+https://developer.mozilla.org/en-US/docs/Web/API/Window/DOMContentLoaded_event
 
 
 ### load
@@ -325,8 +331,10 @@ document.addEventListener("DOMContentLoaded", (event) => { });
 * Построение CSSOM завершено
 
 ```js
-window.addEventListener("load", (event) => { });
+window.addEventListener("load", (event) => {console.log('Load is done')});
 ```
+
+https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event
 
 
 ### unload/beforeunload
@@ -337,6 +345,10 @@ window.addEventListener("beforeunload", (event) => {
   event.returnValue = '';
 });
 ```
+
+https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event
+
+https://developer.mozilla.org/en-US/docs/Web/API/Window/unload_event
 
 
 
