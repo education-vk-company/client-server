@@ -581,6 +581,11 @@ Access-Control-Allow-Credentials: true
 ```
 
 
+What exactly does the Access-Control-Allow-Credentials header do?
+
+https://stackoverflow.com/a/24689738/3984110
+
+
 
 ### Выполнение запросов
 
@@ -646,6 +651,7 @@ XMLHttpRequest.prototype.status/statusText
 * [javascript.info: XMLHttpRequest](https://javascript.info/xmlhttprequest)
 * [MDN: XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
 * [MDN: Using XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest)
+
 
 
 ### Fetch
@@ -728,6 +734,49 @@ Server Sent Events / EventSource
 Клиент устанавлиеает соединение с сервером
 
 Сервер отправляет данные по установленному соединению
+
+
+```html
+html
+
+head
+    title sse
+
+body
+
+    div
+
+    script.
+
+        const sse = new EventSource('/messages');
+        console.log(sse.withCredentials);
+        console.log(sse.readyState);
+        console.log(sse.url);
+        let eventList = document.querySelector('ul');
+        sse.onopen = function() {
+            console.log('Connection to server opened.');
+        };
+        sse.onmessage = function(e) {
+            const newElement = document.createElement("li");
+            let html = ''
+            let opType;
+            try {
+                const msg = JSON.parse(e.data)
+                opType = msg.operationType
+                html = `<p>${msg.author}</p><p>${msg.text}</p>`
+            } catch {
+                html = `<p>${e.data}</p>`
+                opType = null
+            }
+            if (!opType || opType === 'insert') {
+                newElement.innerHTML = html
+            }
+            eventList.appendChild(newElement);
+        };
+        sse.onerror = function() {
+            console.log("EventSource failed.");
+        };
+```
 
 
 ### Web Sockets
@@ -882,7 +931,7 @@ https://googlechrome.github.io/devtools-samples/debug-js/get-started
 ### Обработка нашего массива данных
 
 
-Данные конкретного пользователя
+Данные определенного пользователя
 
 ```js
 const getDataByAuthorId (data, authorId) => (
@@ -891,7 +940,7 @@ const getDataByAuthorId (data, authorId) => (
 ```
 
 
-Комментарии конкретного пользователя
+Комментарии определенного пользователя
 
 ```js
 const getCommentsByAuthorId(data, authorId) => (
@@ -903,7 +952,6 @@ const getCommentsByAuthorId(data, authorId) => (
       }
     }
   }
-
 )
 ```
 
@@ -966,7 +1014,3 @@ const normalizedData = normalize(myArticles, [article]);
 
 
 Эксперименты: https://stackblitz.com/edit/normalizr-playground-jzc2zj?file=index.ts
-
-
-
-### Спасибо за внимание
